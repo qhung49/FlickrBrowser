@@ -11,22 +11,74 @@
 
 @interface PlaceTableViewController ()
 
+// format of place: city, state, country
+- (NSString *) countryNameFromPlaceString:(NSString *)place;
+
 @end
 
 @implementation PlaceTableViewController
 
 #pragma mark Getters/Setters
 
+#pragma mark PlaceTableViewController
+
+- (NSString *)countryNameFromPlaceString:(NSString *)place
+{
+    NSArray *chunks = [place componentsSeparatedByString:@", "];
+    return [[chunks lastObject] copy];
+}
+
 #pragma mark PhotoTableViewController
 
 - (NSArray *)sortedTableContentFromModel
 {
+    /*
     // sort according to current criteria: alphabetical, only 1 section
     NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"_content" 
                                                                ascending:YES
                                                                 selector:@selector(localizedCaseInsensitiveCompare:)];
     NSArray *section = [self.model sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor, nil]];
     return [NSArray arrayWithObject:section];
+     */
+    // sort according to current criteria: section is by contry, cell is by name
+    NSArray *sortedModel = [self.model sortedArrayUsingComparator:^(id obj1, id obj2) {
+        NSString *s1 = [obj1 valueForKeyPath:@"_content"];
+        NSString *s2 = [obj2 valueForKeyPath:@"_content"];
+        NSString *country1 = [self countryNameFromPlaceString:s1];
+        NSString *country2 = [self countryNameFromPlaceString:s2];
+        NSComparisonResult compare1 = [country1 compare:country2 options:NSCaseInsensitiveSearch];
+        if (compare1 == NSOrderedSame)
+        {
+            return [s1 compare:s2 options:NSCaseInsensitiveSearch];
+        }
+        else {
+            return compare1;
+        }
+    }];
+    
+    NSMutableArray *result = [NSMutableArray array];
+    NSMutableArray *currentSectionArray = [NSMutableArray array];
+    for (NSDictionary *place in sortedModel)
+    {
+        if ([currentSectionArray count]==0) // new section
+        {
+            [currentSectionArray addObject:place];
+        }
+        else {
+            NSString *lastPlace = [[currentSectionArray lastObject] valueForKey:@"_content"];
+            NSString *lastCountry = [self countryNameFromPlaceString:lastPlace];
+            if ([lastCountry isEqualToString:[self countryNameFromPlaceString:[place valueForKey:@"_content"]]])
+            {
+                [currentSectionArray addObject:place];
+            }
+            else {
+                [result addObject:[currentSectionArray copy]];
+                currentSectionArray = [NSMutableArray array];
+                [currentSectionArray addObject:place];
+            }
+        }
+    }
+    return result;
 }
 
 - (NSString *)stringIdentifer
@@ -87,6 +139,12 @@
     
     return cell;
 }
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    return [[self countryNameFromPlaceString:[[[self.tableContent objectAtIndex:section] lastObject] valueForKey:@"_content"]] copy];
+}
+
 
 /*
 // Override to support conditional editing of the table view.
