@@ -8,6 +8,8 @@
 
 #import "PlaceTableViewController.h"
 #import "FlickrFetcher.h"
+#import "GeneralTableViewController+SubClass.h"
+#import "PhotoAtPlaceTableViewController.h"
 
 @interface PlaceTableViewController ()
 
@@ -21,6 +23,7 @@
 #pragma mark Getters/Setters
 
 #pragma mark PlaceTableViewController
+@synthesize spinner;
 
 - (NSString *)countryNameFromPlaceString:(NSString *)place
 {
@@ -30,30 +33,25 @@
 
 #pragma mark PhotoTableViewController
 
-- (NSArray *)sortedTableContentFromModel
+- (NSArray *)sortedTableContentFromModel:(NSArray *)model
 {
     /*
-    // sort according to current criteria: alphabetical, only 1 section
-    NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"_content" 
-                                                               ascending:YES
-                                                                selector:@selector(localizedCaseInsensitiveCompare:)];
-    NSArray *section = [self.model sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor, nil]];
-    return [NSArray arrayWithObject:section];
+     // sort according to current criteria: alphabetical, only 1 section
+     NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"_content" 
+     ascending:YES
+     selector:@selector(localizedCaseInsensitiveCompare:)];
+     NSArray *section = [self.model sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor, nil]];
+     return [NSArray arrayWithObject:section];
      */
     // sort according to current criteria: section is by contry, cell is by name
-    NSArray *sortedModel = [self.model sortedArrayUsingComparator:^(id obj1, id obj2) {
-        NSString *s1 = [obj1 valueForKeyPath:@"_content"];
-        NSString *s2 = [obj2 valueForKeyPath:@"_content"];
+    NSArray *sortedModel = [model sortedArrayUsingComparator:^(id obj1, id obj2) {
+        NSString *s1 = [obj1 valueForKeyPath:FLICKR_PLACE_NAME];
+        NSString *s2 = [obj2 valueForKeyPath:FLICKR_PLACE_NAME];
         NSString *country1 = [self countryNameFromPlaceString:s1];
         NSString *country2 = [self countryNameFromPlaceString:s2];
         NSComparisonResult compare1 = [country1 compare:country2 options:NSCaseInsensitiveSearch];
-        if (compare1 == NSOrderedSame)
-        {
-            return [s1 compare:s2 options:NSCaseInsensitiveSearch];
-        }
-        else {
-            return compare1;
-        }
+        if (compare1 == NSOrderedSame) return [s1 compare:s2 options:NSCaseInsensitiveSearch];
+        else return compare1;
     }];
     
     NSMutableArray *result = [NSMutableArray array];
@@ -65,9 +63,9 @@
             [currentSectionArray addObject:place];
         }
         else {
-            NSString *lastPlace = [[currentSectionArray lastObject] valueForKey:@"_content"];
+            NSString *lastPlace = [[currentSectionArray lastObject] valueForKey:FLICKR_PLACE_NAME];
             NSString *lastCountry = [self countryNameFromPlaceString:lastPlace];
-            if ([lastCountry isEqualToString:[self countryNameFromPlaceString:[place valueForKey:@"_content"]]])
+            if ([lastCountry isEqualToString:[self countryNameFromPlaceString:[place valueForKey:FLICKR_PLACE_NAME]]])
             {
                 [currentSectionArray addObject:place];
             }
@@ -81,9 +79,26 @@
     return result;
 }
 
-- (NSString *)stringIdentifer
+- (void)refresh:(id)sender 
 {
-    return @"Top Places Cell";
+    [super refresh:sender];
+    // Reload model
+    dispatch_queue_t downloadQueue = dispatch_queue_create("downloader", NULL);
+    dispatch_async(downloadQueue, ^{
+        NSArray *places = [FlickrFetcher topPlaces];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.spinner stopAnimating];
+            if ([sender isKindOfClass:[UIBarButtonItem class]])
+            {
+                self.navigationItem.rightBarButtonItem = sender;
+            }
+            else {
+                self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Refresh" style:UIBarButtonSystemItemRefresh target:self action:@selector(refresh:)];
+            }
+            self.model = places;
+        });
+    });
+    dispatch_release(downloadQueue);
 }
 
 #pragma mark UITableViewController
@@ -91,9 +106,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    // Reload model
-    self.model = [FlickrFetcher topPlaces];
+    [self refresh:nil];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender 
@@ -101,9 +114,19 @@
     if ([segue.identifier isEqualToString:@"Show Photo List"]) {
         NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
         NSDictionary *place = [[self.tableContent objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-        NSString *newTitle = [NSString stringWithFormat:@"At %@",[[sender textLabel] text]];
+        NSString *newTitle = [[sender textLabel] text];
         [segue.destinationViewController setTitle:newTitle];
-        [segue.destinationViewController setModel:[FlickrFetcher photosInPlace:place maxResults:50]];
+        [segue.destinationViewController setPlace:place];
+        /*NSString *newTitle = [[sender textLabel] text];
+        [segue.destinationViewController setTitle:newTitle];
+        dispatch_queue_t downloadQueue = dispatch_queue_create("downloader", NULL);
+        dispatch_async(downloadQueue, ^{
+            NSArray *photos = [FlickrFetcher photosInPlace:place maxResults:50];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [segue.destinationViewController setModel:photos];
+            });
+        });
+        dispatch_release(downloadQueue);*/
     }
 }
 
@@ -131,7 +154,7 @@
     
     // Configure the cell...
     NSDictionary *place = [[self.tableContent objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-    NSString *placeString = [place objectForKey:@"_content"];
+    NSString *placeString = [place objectForKey:FLICKR_PLACE_NAME];
     NSMutableArray *chunks = [[placeString componentsSeparatedByString:@", "] mutableCopy];
     cell.textLabel.text = [chunks objectAtIndex:0];
     [chunks removeObjectAtIndex:0];
@@ -142,48 +165,48 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return [[self countryNameFromPlaceString:[[[self.tableContent objectAtIndex:section] lastObject] valueForKey:@"_content"]] copy];
+    return [[self countryNameFromPlaceString:[[[self.tableContent objectAtIndex:section] lastObject] valueForKey:FLICKR_PLACE_NAME]] copy];
 }
 
 
 /*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
+ // Override to support conditional editing of the table view.
+ - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ // Return NO if you do not want the specified item to be editable.
+ return YES;
+ }
+ */
 
 /*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
+ // Override to support editing the table view.
+ - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ if (editingStyle == UITableViewCellEditingStyleDelete) {
+ // Delete the row from the data source
+ [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+ }   
+ else if (editingStyle == UITableViewCellEditingStyleInsert) {
+ // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+ }   
+ }
+ */
 
 /*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
+ // Override to support rearranging the table view.
+ - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+ {
+ }
+ */
 
 /*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
+ // Override to support conditional rearranging of the table view.
+ - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ // Return NO if you do not want the item to be re-orderable.
+ return YES;
+ }
+ */
 
 #pragma mark - UITableViewDelegate
 
@@ -197,5 +220,9 @@
      [self.navigationController pushViewController:detailViewController animated:YES];
      */
 }
- 
+
+- (void)viewDidUnload {
+    [self setSpinner:nil];
+    [super viewDidUnload];
+}
 @end

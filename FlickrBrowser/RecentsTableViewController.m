@@ -7,6 +7,7 @@
 //
 
 #import "RecentsTableViewController.h"
+#import "GeneralTableViewController+SubClass.h"
 
 @interface RecentsTableViewController ()
 
@@ -16,18 +17,39 @@
 
 #pragma mark GeneralTableViewController
 
-- (NSArray *)sortedTableContentFromModel
+- (NSArray *)sortedTableContentFromModel:(NSArray *)model
 {
     // sort according to current criteria: alphabetical, only 1 section
-    NSArray *section = [[self.model reverseObjectEnumerator] allObjects];
+    NSArray *section = [[model reverseObjectEnumerator] allObjects];
     return [NSArray arrayWithObject:section];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    // Get model from defaults
-    self.model = [[NSUserDefaults standardUserDefaults] valueForKey:RECENTS_KEY];
-    [self.tableView reloadData];
+    [super viewWillAppear:animated];
+    [self refresh:nil];
+}
+
+-(void)refresh:(id)sender
+{
+    [super refresh:sender];
+    // Reload model
+    dispatch_queue_t downloadQueue = dispatch_queue_create("downloader", NULL);
+    dispatch_async(downloadQueue, ^{
+        NSArray *recents = [[NSUserDefaults standardUserDefaults] valueForKey:RECENTS_KEY];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.spinner stopAnimating];
+            if ([sender isKindOfClass:[UIBarButtonItem class]])
+            {
+                self.navigationItem.rightBarButtonItem = sender;
+            }
+            else {
+                self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Refresh" style:UIBarButtonSystemItemRefresh target:self action:@selector(refresh:)];
+            }
+            self.model = recents;
+        });
+    });
+    dispatch_release(downloadQueue);
 }
 
 @end

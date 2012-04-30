@@ -7,6 +7,7 @@
 //
 
 #import "GeneralTableViewController.h"
+#import "GeneralTableViewController+SubClass.h"
 
 @interface GeneralTableViewController ()
 
@@ -18,36 +19,47 @@
 
 @synthesize model = _model;
 @synthesize tableContent = _tableContent;
+@synthesize spinner = _spinner;
 
 - (void)setModel:(NSArray *)model
 {
-    _model = model;
-    self.tableContent = nil;
-}
-
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
-- (NSArray *)tableContent
-{
-    if (!_tableContent)
+    if (model)
     {
-        _tableContent = [self sortedTableContentFromModel];
+        _model = model;
+        self.tableContent = [self sortedTableContentFromModel:model];
+        [self.tableView reloadData];
     }
-    return _tableContent;
 }
 
 #pragma mark GeneralTableViewController
 
-- (NSArray *)sortedTableContentFromModel
+- (NSArray *)sortedTableContentFromModel:(NSArray *)model
 {
     return nil;
+}
+
+-(void)refresh:(id)sender
+{
+    // might want to use introspection to be sure sender is UIBarButtonItem
+    // (if not, it can skip the spinner)
+    // that way this method can be a little more generic
+    self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.spinner];
+    self.spinner.hidesWhenStopped = YES;
+    [self.spinner startAnimating];
+    
+    /*
+    dispatch_queue_t downloadQueue = dispatch_queue_create("flickr downloader", NULL);
+    dispatch_async(downloadQueue, ^{
+        NSArray *photos = [FlickrFetcher recentGeoreferencedPhotos];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.navigationItem.rightBarButtonItem = sender;
+            self.photos = photos;
+        });
+    });
+    dispatch_release(downloadQueue);
+     */
+
 }
 
 #pragma mark UITableViewController

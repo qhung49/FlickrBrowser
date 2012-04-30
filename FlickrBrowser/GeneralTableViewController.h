@@ -12,7 +12,6 @@
 
 @property (nonatomic, strong) NSArray *model;
 @property (nonatomic, strong) NSArray *tableContent;
-
-- (NSArray *) sortedTableContentFromModel;
+@property (nonatomic, strong) UIActivityIndicatorView *spinner;
 
 @end

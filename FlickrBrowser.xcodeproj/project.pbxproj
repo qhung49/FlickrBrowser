@@ -25,6 +25,7 @@
 		B30D0AA61539B3C300431D7A /* PhotoTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B30D0AA51539B3C300431D7A /* PhotoTableViewController.m */; };
 		B343A3351539BEC900BBFC98 /* GeneralTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B343A3341539BEC900BBFC98 /* GeneralTableViewController.m */; };
 		B343A3471539D04100BBFC98 /* PhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B343A3461539D04100BBFC98 /* PhotoViewController.m */; };
+		B3F1B71F154DA424000FC635 /* PhotoAtPlaceTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B3F1B71E154DA424000FC635 /* PhotoAtPlaceTableViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,7 +43,7 @@
 		B30D0A4A153970AB00431D7A /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
 		B30D0A4F153970AB00431D7A /* first.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = first.png; sourceTree = "<group>"; };
 		B30D0A51153970AB00431D7A /* first@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "first@2x.png"; sourceTree = "<group>"; };
-		B30D0A53153970AB00431D7A /* RecentsTableViewController.h */ = {isa = PBXFileReference; path = RecentsTableViewController.h; sourceTree = "<group>"; };
+		B30D0A53153970AB00431D7A /* RecentsTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RecentsTableViewController.h; sourceTree = "<group>"; };
 		B30D0A54153970AB00431D7A /* RecentsTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RecentsTableViewController.m; sourceTree = "<group>"; };
 		B30D0A56153970AB00431D7A /* second.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = second.png; sourceTree = "<group>"; };
 		B30D0A58153970AB00431D7A /* second@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "second@2x.png"; sourceTree = "<group>"; };
@@ -57,6 +58,9 @@
 		B343A3341539BEC900BBFC98 /* GeneralTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralTableViewController.m; sourceTree = "<group>"; };
 		B343A3451539D04100BBFC98 /* PhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoViewController.h; sourceTree = "<group>"; };
 		B343A3461539D04100BBFC98 /* PhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoViewController.m; sourceTree = "<group>"; };
+		B3C2EA6F1549A1DB002F234A /* GeneralTableViewController+SubClass.h */ = {isa = PBXFileReference; fileEncoding = 4; path = "GeneralTableViewController+SubClass.h"; sourceTree = "<group>"; };
+		B3F1B71D154DA424000FC635 /* PhotoAtPlaceTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoAtPlaceTableViewController.h; sourceTree = "<group>"; };
+		B3F1B71E154DA424000FC635 /* PhotoAtPlaceTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoAtPlaceTableViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,20 +110,19 @@
 			children = (
 				B343A3451539D04100BBFC98 /* PhotoViewController.h */,
 				B343A3461539D04100BBFC98 /* PhotoViewController.m */,
-				B30D0A46153970AB00431D7A /* MainStoryboard_iPhone.storyboard */,
+				B3C2EA6F1549A1DB002F234A /* GeneralTableViewController+SubClass.h */,
 				B343A3331539BEC900BBFC98 /* GeneralTableViewController.h */,
 				B343A3341539BEC900BBFC98 /* GeneralTableViewController.m */,
-				B30D0A49153970AB00431D7A /* MainStoryboard_iPad.storyboard */,
 				B30D0AA41539B3C300431D7A /* PhotoTableViewController.h */,
 				B30D0AA51539B3C300431D7A /* PhotoTableViewController.m */,
-				B30D0AA11539A4DB00431D7A /* PlaceTableViewController.h */,
-				B30D0AA21539A4DB00431D7A /* PlaceTableViewController.m */,
+				B3F1B71D154DA424000FC635 /* PhotoAtPlaceTableViewController.h */,
+				B3F1B71E154DA424000FC635 /* PhotoAtPlaceTableViewController.m */,
 				B30D0A53153970AB00431D7A /* RecentsTableViewController.h */,
 				B30D0A54153970AB00431D7A /* RecentsTableViewController.m */,
-				B30D0A4F153970AB00431D7A /* first.png */,
-				B30D0A51153970AB00431D7A /* first@2x.png */,
-				B30D0A56153970AB00431D7A /* second.png */,
-				B30D0A58153970AB00431D7A /* second@2x.png */,
+				B30D0AA11539A4DB00431D7A /* PlaceTableViewController.h */,
+				B30D0AA21539A4DB00431D7A /* PlaceTableViewController.m */,
+				B38626E4154444F90075E4EA /* Storyboards */,
+				B38626E5154445040075E4EA /* img */,
 				B30D0A3B153970AB00431D7A /* Supporting Files */,
 			);
 			path = FlickrBrowser;
@@ -146,6 +149,26 @@
 				B30D0A93153978BC00431D7A /* FlickrFetcher.m */,
 			);
 			path = FlickrFetcher;
+			sourceTree = "<group>";
+		};
+		B38626E4154444F90075E4EA /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				B30D0A46153970AB00431D7A /* MainStoryboard_iPhone.storyboard */,
+				B30D0A49153970AB00431D7A /* MainStoryboard_iPad.storyboard */,
+			);
+			name = Storyboards;
+			sourceTree = "<group>";
+		};
+		B38626E5154445040075E4EA /* img */ = {
+			isa = PBXGroup;
+			children = (
+				B30D0A4F153970AB00431D7A /* first.png */,
+				B30D0A51153970AB00431D7A /* first@2x.png */,
+				B30D0A56153970AB00431D7A /* second.png */,
+				B30D0A58153970AB00431D7A /* second@2x.png */,
+			);
+			name = img;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -224,6 +247,7 @@
 				B30D0AA61539B3C300431D7A /* PhotoTableViewController.m in Sources */,
 				B343A3351539BEC900BBFC98 /* GeneralTableViewController.m in Sources */,
 				B343A3471539D04100BBFC98 /* PhotoViewController.m in Sources */,
+				B3F1B71F154DA424000FC635 /* PhotoAtPlaceTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

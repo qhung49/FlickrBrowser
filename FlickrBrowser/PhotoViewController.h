@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <UIKit/UIGestureRecognizerSubclass.h>
 
-@interface PhotoViewController : UIViewController
+@interface PhotoViewController : UIViewController <UISplitViewControllerDelegate>
 
 @property (nonatomic,strong) NSURL *photoURL;
 

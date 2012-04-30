@@ -55,11 +55,11 @@
             </objects>
             <point key="canvasLocation" x="1035" y="-138"/>
         </scene>
-        <!--Photo Table View Controller - Photos at -->
+        <!--Photo At Place Table View Controller-->
         <scene sceneID="kFM-2S-RGu">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="afm-hp-VAj" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tableViewController id="Src-Eh-jhU" customClass="PhotoTableViewController" sceneMemberID="viewController">
+                <tableViewController id="Src-Eh-jhU" customClass="PhotoAtPlaceTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="rwX-ub-gck">
                         <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -99,7 +99,7 @@
                             <outlet property="delegate" destination="Src-Eh-jhU" id="HSq-3E-oPT"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Photos at " id="IOQ-tZ-HQd"/>
+                    <navigationItem key="navigationItem" id="IOQ-tZ-HQd"/>
                 </tableViewController>
             </objects>
             <point key="canvasLocation" x="1491" y="-138"/>
@@ -115,7 +115,7 @@
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.20000000000000001" maximumZoomScale="5" id="Yuu-Pi-GcM">
                                 <rect key="frame" x="-20" y="-20" width="360" height="407"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="PBP-QZ-ZVJ">
                                         <rect key="frame" x="20" y="20" width="320" height="367"/>
@@ -123,6 +123,10 @@
                                     </imageView>
                                 </subviews>
                             </scrollView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" style="gray" id="0Za-9C-TUU">
+                                <rect key="frame" x="150" y="174" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -130,10 +134,11 @@
                     <connections>
                         <outlet property="imageView" destination="PBP-QZ-ZVJ" id="G7X-sZ-zEY"/>
                         <outlet property="scrollView" destination="Yuu-Pi-GcM" id="adY-XF-125"/>
+                        <outlet property="spinner" destination="0Za-9C-TUU" id="DGy-Pw-DNT"/>
                     </connections>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="2032" y="-138"/>
+            <point key="canvasLocation" x="2158" y="215"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="15">
@@ -246,6 +251,32 @@
         <image name="first" width="16" height="16"/>
         <image name="second" width="16" height="16"/>
     </resources>
+    <classes>
+        <class className="GeneralTableViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GeneralTableViewController.h"/>
+        </class>
+        <class className="PhotoAtPlaceTableViewController" superclassName="PhotoTableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/PhotoAtPlaceTableViewController.h"/>
+        </class>
+        <class className="PhotoTableViewController" superclassName="GeneralTableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/PhotoTableViewController.h"/>
+        </class>
+        <class className="PhotoViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/PhotoViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
+                <relationship kind="outlet" name="spinner" candidateClass="UIActivityIndicatorView"/>
+                <relationship kind="outlet" name="toolbar" candidateClass="UIToolbar"/>
+            </relationships>
+        </class>
+        <class className="PlaceTableViewController" superclassName="GeneralTableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/PlaceTableViewController.h"/>
+        </class>
+        <class className="RecentsTableViewController" superclassName="PhotoTableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/RecentsTableViewController.h"/>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

@@ -7,29 +7,17 @@
 //
 
 #import "PhotoTableViewController.h"
+#import "GeneralTableViewController+SubClass.h"
 #import "FlickrFetcher.h"
 #import "PhotoViewController.h"
 
 @interface PhotoTableViewController ()
 
+- (void)updatePhotoViewController:(PhotoViewController *)photoVC withSelectedIndexPath:(NSIndexPath *)indexPath andTitle:(NSString *)title;
+
 @end
 
 @implementation PhotoTableViewController
-
-#pragma mark Getters/Setters
-
-#pragma mark GeneralTableViewController
-
-- (NSArray *)sortedTableContentFromModel
-{
-    // sort according to current criteria: alphabetical, only 1 section
-    NSArray *section = [self.model sortedArrayUsingComparator:^(id obj1, id obj2) {
-        NSString *s1 = [obj1 valueForKeyPath:@"description._content"];
-        NSString *s2 = [obj2 valueForKeyPath:@"description._content"];
-        return [s1 compare:s2 options:NSCaseInsensitiveSearch];
-    }];
-    return [NSArray arrayWithObject:section];
-}
 
 #pragma mark UIViewController
 
@@ -37,14 +25,23 @@
 {
     if ([segue.identifier isEqualToString:@"Display Photo"]) {
         NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
-        NSDictionary *photo = [[self.tableContent objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-        NSURL *url = [FlickrFetcher urlForPhoto:photo format:FlickrPhotoFormatLarge];
-        [segue.destinationViewController setPhotoURL:url];
-        [segue.destinationViewController setTitle:[[sender textLabel] text]];
+        PhotoViewController *photoVC = ([segue.destinationViewController isKindOfClass:[PhotoViewController class]]) ? segue.destinationViewController : nil;
+        [self updatePhotoViewController:photoVC withSelectedIndexPath:indexPath andTitle:[[sender textLabel] text]];
     }
 }
 
-#pragma mark UITableViewController
+#pragma mark PhotoTableViewController
+
+- (void)updatePhotoViewController:(PhotoViewController *)photoVC withSelectedIndexPath:(NSIndexPath *)indexPath andTitle:(NSString *)title
+{
+    NSDictionary *photo = [[self.tableContent objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    NSURL *url = [FlickrFetcher urlForPhoto:photo format:FlickrPhotoFormatOriginal];
+    
+    // original format not available, fall back to large
+    if (!url) url = [FlickrFetcher urlForPhoto:photo format:FlickrPhotoFormatLarge];
+    [photoVC setTitle:title];
+    [photoVC setPhotoURL:url];
+}
 
 #pragma mark - UITableViewDataSource
 
@@ -66,23 +63,23 @@
     
     // Configure the cell...
     NSDictionary *photo = [[self.tableContent objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-    if ([[photo valueForKey:@"title"] isEqualToString:@""])
+    if ([[photo valueForKey:FLICKR_PHOTO_TITLE] isEqualToString:@""])
     {
-        if ([[photo valueForKeyPath:@"description._content"] isEqualToString:@""])
+        if ([[photo valueForKeyPath:FLICKR_PHOTO_DESCRIPTION] isEqualToString:@""])
         {
             cell.textLabel.text = @"No Title";
         }
         else
         {
-            cell.textLabel.text = [photo valueForKeyPath:@"description._content"];
+            cell.textLabel.text = [photo valueForKeyPath:FLICKR_PHOTO_DESCRIPTION];
         }
     }
     else
     {
-        cell.textLabel.text = [photo valueForKey:@"title"];
+        cell.textLabel.text = [photo valueForKey:FLICKR_PHOTO_TITLE];
     }
     
-    cell.detailTextLabel.text = [photo valueForKeyPath:@"description._content"];
+    cell.detailTextLabel.text = [photo valueForKeyPath:FLICKR_PHOTO_DESCRIPTION];
 
     return cell;
 }
@@ -140,8 +137,8 @@
     while (index<[recents count])
     {
         NSDictionary *item = [recents objectAtIndex:index];
-        NSString *idItem = [item valueForKey:@"id"];
-        if ([idItem isEqualToString:[photo valueForKey:@"id"]])
+        NSString *idItem = [item valueForKey:FLICKR_PHOTO_ID];
+        if ([idItem isEqualToString:[photo valueForKey:FLICKR_PHOTO_ID]])
         {
             [recents removeObject:item];
         }
@@ -153,6 +150,15 @@
     [recents addObject:photo];
     [[NSUserDefaults standardUserDefaults] setObject:recents forKey:RECENTS_KEY];
     [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    // in case of iPad, set master view controller
+    PhotoViewController *photoVC = [self.splitViewController.viewControllers lastObject];
+    if (photoVC)
+    {
+        [self updatePhotoViewController:photoVC 
+                  withSelectedIndexPath:indexPath 
+                               andTitle:[self.tableView cellForRowAtIndexPath:indexPath].textLabel.text];
+    }
 }
 
 @end
