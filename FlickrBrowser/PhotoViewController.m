@@ -7,6 +7,7 @@
 //
 
 #import "PhotoViewController.h"
+#import "PhotoCache.h"
 
 @interface PhotoViewController () <UIScrollViewDelegate>
 
@@ -16,9 +17,9 @@
 @property (nonatomic, strong) UIBarButtonItem *splitViewBarButtonItem;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *spinner;
 @property (nonatomic) BOOL viewAppeared;
+@property (nonatomic,strong) PhotoCache *photoCache;
 
 - (void) refreshView;
-
 - (void) zoomToOptimalRect;
 
 @end
@@ -31,13 +32,23 @@
 @synthesize splitViewBarButtonItem = _splitViewBarButtonItem;
 @synthesize spinner = _spinner;
 @synthesize viewAppeared = _viewAppeared;
+@synthesize photoCache = _photoCache;
 
 #pragma mark Setters/Getters
 
 - (void)setPhotoURL:(NSURL *)photoURL
 {
-    _photoURL = photoURL;    
+    _photoURL = photoURL;
     if (self.viewAppeared) [self refreshView];
+}
+
+- (PhotoCache *)photoCache
+{
+    if (!_photoCache)
+    {
+        _photoCache = [[PhotoCache alloc] init];
+    }
+    return _photoCache;
 }
 
 - (void)setSplitViewBarButtonItem:(UIBarButtonItem *)splitViewBarButtonItem
@@ -97,11 +108,15 @@
     
     dispatch_queue_t downloadQueue = dispatch_queue_create("downloader", NULL);
     dispatch_async(downloadQueue, ^{
-        NSData *data = [NSData dataWithContentsOfURL:_photoURL];
+        NSURL *currentURL = self.photoURL;
+        self.photoCache.url = self.photoURL;
+        UIImage *image = self.photoCache.image;
         dispatch_async(dispatch_get_main_queue(), ^{
+            if (![currentURL isEqual:self.photoURL]) return; // model has changed
             [self.spinner stopAnimating];
-            self.imageView.image = [UIImage imageWithData:data];
+            self.imageView.image = image;
             self.imageView.frame = CGRectMake(0, 0, self.imageView.image.size.width, self.imageView.image.size.height);
+            NSLog(@"imageView frame = %@",NSStringFromCGRect(self.imageView.frame));
             self.scrollView.zoomScale = 1;
             self.scrollView.contentSize = self.imageView.image.size;
             //self.scrollView.bounces = NO;
@@ -113,8 +128,9 @@
 
 - (void)zoomToOptimalRect
 {
+    NSLog(@"imageView frame = %@",NSStringFromCGRect(self.imageView.frame));
     CGRect bounds = self.scrollView.bounds;
-    CGRect rect = self.imageView.frame;
+    CGRect rect = CGRectMake(self.imageView.frame.origin.x, self.imageView.frame.origin.y, self.imageView.frame.size.width, self.imageView.frame.size.height);
     CGFloat ratio = bounds.size.height/bounds.size.width;
     if (rect.size.height/rect.size.width > ratio)
     {
@@ -124,6 +140,9 @@
     {
         rect.size.width = rect.size.height / ratio;
     }
+    self.scrollView.maximumZoomScale = MAX(rect.size.height/bounds.size.height, rect.size.width/bounds.size.width);
+    self.scrollView.minimumZoomScale = MIN(bounds.size.height/rect.size.height, bounds.size.width/rect.size.width);
+    NSLog(@"Scale min = %f, max = %f",self.scrollView.minimumZoomScale,self.scrollView.maximumZoomScale);
     [self.scrollView zoomToRect:rect animated:YES];
 }
 

@@ -26,6 +26,7 @@
 		B343A3351539BEC900BBFC98 /* GeneralTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B343A3341539BEC900BBFC98 /* GeneralTableViewController.m */; };
 		B343A3471539D04100BBFC98 /* PhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B343A3461539D04100BBFC98 /* PhotoViewController.m */; };
 		B3F1B71F154DA424000FC635 /* PhotoAtPlaceTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B3F1B71E154DA424000FC635 /* PhotoAtPlaceTableViewController.m */; };
+		B3F1B72C154EEE07000FC635 /* PhotoCache.m in Sources */ = {isa = PBXBuildFile; fileRef = B3F1B72B154EEE07000FC635 /* PhotoCache.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,9 +59,11 @@
 		B343A3341539BEC900BBFC98 /* GeneralTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralTableViewController.m; sourceTree = "<group>"; };
 		B343A3451539D04100BBFC98 /* PhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoViewController.h; sourceTree = "<group>"; };
 		B343A3461539D04100BBFC98 /* PhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoViewController.m; sourceTree = "<group>"; };
-		B3C2EA6F1549A1DB002F234A /* GeneralTableViewController+SubClass.h */ = {isa = PBXFileReference; fileEncoding = 4; path = "GeneralTableViewController+SubClass.h"; sourceTree = "<group>"; };
+		B3C2EA6F1549A1DB002F234A /* GeneralTableViewController+SubClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GeneralTableViewController+SubClass.h"; sourceTree = "<group>"; };
 		B3F1B71D154DA424000FC635 /* PhotoAtPlaceTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoAtPlaceTableViewController.h; sourceTree = "<group>"; };
 		B3F1B71E154DA424000FC635 /* PhotoAtPlaceTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoAtPlaceTableViewController.m; sourceTree = "<group>"; };
+		B3F1B72A154EEE07000FC635 /* PhotoCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoCache.h; sourceTree = "<group>"; };
+		B3F1B72B154EEE07000FC635 /* PhotoCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoCache.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,19 +111,9 @@
 		B30D0A3A153970AB00431D7A /* FlickrBrowser */ = {
 			isa = PBXGroup;
 			children = (
-				B343A3451539D04100BBFC98 /* PhotoViewController.h */,
-				B343A3461539D04100BBFC98 /* PhotoViewController.m */,
-				B3C2EA6F1549A1DB002F234A /* GeneralTableViewController+SubClass.h */,
-				B343A3331539BEC900BBFC98 /* GeneralTableViewController.h */,
-				B343A3341539BEC900BBFC98 /* GeneralTableViewController.m */,
-				B30D0AA41539B3C300431D7A /* PhotoTableViewController.h */,
-				B30D0AA51539B3C300431D7A /* PhotoTableViewController.m */,
-				B3F1B71D154DA424000FC635 /* PhotoAtPlaceTableViewController.h */,
-				B3F1B71E154DA424000FC635 /* PhotoAtPlaceTableViewController.m */,
-				B30D0A53153970AB00431D7A /* RecentsTableViewController.h */,
-				B30D0A54153970AB00431D7A /* RecentsTableViewController.m */,
-				B30D0AA11539A4DB00431D7A /* PlaceTableViewController.h */,
-				B30D0AA21539A4DB00431D7A /* PlaceTableViewController.m */,
+				B3F1B72D154EEE13000FC635 /* View Controller */,
+				B3F1B72A154EEE07000FC635 /* PhotoCache.h */,
+				B3F1B72B154EEE07000FC635 /* PhotoCache.m */,
 				B38626E4154444F90075E4EA /* Storyboards */,
 				B38626E5154445040075E4EA /* img */,
 				B30D0A3B153970AB00431D7A /* Supporting Files */,
@@ -169,6 +162,26 @@
 				B30D0A58153970AB00431D7A /* second@2x.png */,
 			);
 			name = img;
+			sourceTree = "<group>";
+		};
+		B3F1B72D154EEE13000FC635 /* View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				B343A3451539D04100BBFC98 /* PhotoViewController.h */,
+				B343A3461539D04100BBFC98 /* PhotoViewController.m */,
+				B3C2EA6F1549A1DB002F234A /* GeneralTableViewController+SubClass.h */,
+				B343A3331539BEC900BBFC98 /* GeneralTableViewController.h */,
+				B343A3341539BEC900BBFC98 /* GeneralTableViewController.m */,
+				B30D0AA41539B3C300431D7A /* PhotoTableViewController.h */,
+				B30D0AA51539B3C300431D7A /* PhotoTableViewController.m */,
+				B3F1B71D154DA424000FC635 /* PhotoAtPlaceTableViewController.h */,
+				B3F1B71E154DA424000FC635 /* PhotoAtPlaceTableViewController.m */,
+				B30D0A53153970AB00431D7A /* RecentsTableViewController.h */,
+				B30D0A54153970AB00431D7A /* RecentsTableViewController.m */,
+				B30D0AA11539A4DB00431D7A /* PlaceTableViewController.h */,
+				B30D0AA21539A4DB00431D7A /* PlaceTableViewController.m */,
+			);
+			name = "View Controller";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -248,6 +261,7 @@
 				B343A3351539BEC900BBFC98 /* GeneralTableViewController.m in Sources */,
 				B343A3471539D04100BBFC98 /* PhotoViewController.m in Sources */,
 				B3F1B71F154DA424000FC635 /* PhotoAtPlaceTableViewController.m in Sources */,
+				B3F1B72C154EEE07000FC635 /* PhotoCache.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
