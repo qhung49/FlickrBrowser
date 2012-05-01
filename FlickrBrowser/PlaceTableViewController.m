@@ -10,6 +10,7 @@
 #import "FlickrFetcher.h"
 #import "GeneralTableViewController+SubClass.h"
 #import "PhotoAtPlaceTableViewController.h"
+#import "MapViewController.h"
 
 @interface PlaceTableViewController ()
 
@@ -88,13 +89,6 @@
         NSArray *places = [FlickrFetcher topPlaces];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.spinner stopAnimating];
-            if ([sender isKindOfClass:[UIBarButtonItem class]])
-            {
-                self.navigationItem.rightBarButtonItem = sender;
-            }
-            else {
-                self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Refresh" style:UIBarButtonSystemItemRefresh target:self action:@selector(refresh:)];
-            }
             self.model = places;
         });
     });
@@ -109,6 +103,11 @@
     [self refresh:nil];
 }
 
+- (void)viewDidUnload {
+    [self setSpinner:nil];
+    [super viewDidUnload];
+}
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender 
 {
     if ([segue.identifier isEqualToString:@"Show Photo List"]) {
@@ -117,16 +116,11 @@
         NSString *newTitle = [[sender textLabel] text];
         [segue.destinationViewController setTitle:newTitle];
         [segue.destinationViewController setPlace:place];
-        /*NSString *newTitle = [[sender textLabel] text];
-        [segue.destinationViewController setTitle:newTitle];
-        dispatch_queue_t downloadQueue = dispatch_queue_create("downloader", NULL);
-        dispatch_async(downloadQueue, ^{
-            NSArray *photos = [FlickrFetcher photosInPlace:place maxResults:50];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [segue.destinationViewController setModel:photos];
-            });
-        });
-        dispatch_release(downloadQueue);*/
+    }
+    else if ([segue.identifier isEqualToString:@"Show Map"]) {
+        [segue.destinationViewController setAnnotationsArePhoto:NO];
+        [segue.destinationViewController setTitle:@"Map"];
+        [segue.destinationViewController setModel:self.model];
     }
 }
 
@@ -154,11 +148,10 @@
     
     // Configure the cell...
     NSDictionary *place = [[self.tableContent objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-    NSString *placeString = [place objectForKey:FLICKR_PLACE_NAME];
-    NSMutableArray *chunks = [[placeString componentsSeparatedByString:@", "] mutableCopy];
-    cell.textLabel.text = [chunks objectAtIndex:0];
-    [chunks removeObjectAtIndex:0];
-    cell.detailTextLabel.text = [chunks componentsJoinedByString:@", "];
+    NSString *placeName = [place objectForKey:FLICKR_PLACE_NAME];
+    NSDictionary *cityState = [FlickrFetcher cityAndStateFromPlaceName:placeName];    
+    cell.textLabel.text = [cityState objectForKey:@"city"];
+    cell.detailTextLabel.text = [cityState objectForKey:@"state"];
     
     return cell;
 }
@@ -221,8 +214,4 @@
      */
 }
 
-- (void)viewDidUnload {
-    [self setSpinner:nil];
-    [super viewDidUnload];
-}
 @end

@@ -40,26 +40,14 @@
 
 -(void)refresh:(id)sender
 {
-    // might want to use introspection to be sure sender is UIBarButtonItem
-    // (if not, it can skip the spinner)
-    // that way this method can be a little more generic
-    self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.spinner];
+    self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    self.spinner.color = [UIColor grayColor];
+    //self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.spinner];
+    [self.tableView addSubview:self.spinner];
+    self.spinner.center = self.tableView.center;
+    
     self.spinner.hidesWhenStopped = YES;
     [self.spinner startAnimating];
-    
-    /*
-    dispatch_queue_t downloadQueue = dispatch_queue_create("flickr downloader", NULL);
-    dispatch_async(downloadQueue, ^{
-        NSArray *photos = [FlickrFetcher recentGeoreferencedPhotos];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.navigationItem.rightBarButtonItem = sender;
-            self.photos = photos;
-        });
-    });
-    dispatch_release(downloadQueue);
-     */
-
 }
 
 #pragma mark UITableViewController
@@ -85,7 +73,6 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return YES;
-    //return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 #pragma mark - UITableViewDataSource

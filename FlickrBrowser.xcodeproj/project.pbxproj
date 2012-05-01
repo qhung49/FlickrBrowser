@@ -25,6 +25,11 @@
 		B30D0AA61539B3C300431D7A /* PhotoTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B30D0AA51539B3C300431D7A /* PhotoTableViewController.m */; };
 		B343A3351539BEC900BBFC98 /* GeneralTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B343A3341539BEC900BBFC98 /* GeneralTableViewController.m */; };
 		B343A3471539D04100BBFC98 /* PhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B343A3461539D04100BBFC98 /* PhotoViewController.m */; };
+		B39D3CAE154FA0BE0018ED6F /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B39D3CAD154FA0BE0018ED6F /* MapViewController.m */; };
+		B39D3CB1154FAA7B0018ED6F /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B39D3CB0154FAA7B0018ED6F /* CoreLocation.framework */; };
+		B39D3CB3154FAA820018ED6F /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B39D3CB2154FAA820018ED6F /* MapKit.framework */; };
+		B39D3CBD154FDC440018ED6F /* PhotoAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = B39D3CBC154FDC440018ED6F /* PhotoAnnotation.m */; };
+		B39D3CC0154FDEFE0018ED6F /* PlaceAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = B39D3CBF154FDEFD0018ED6F /* PlaceAnnotation.m */; };
 		B3F1B71F154DA424000FC635 /* PhotoAtPlaceTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B3F1B71E154DA424000FC635 /* PhotoAtPlaceTableViewController.m */; };
 		B3F1B72C154EEE07000FC635 /* PhotoCache.m in Sources */ = {isa = PBXBuildFile; fileRef = B3F1B72B154EEE07000FC635 /* PhotoCache.m */; };
 /* End PBXBuildFile section */
@@ -59,6 +64,14 @@
 		B343A3341539BEC900BBFC98 /* GeneralTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralTableViewController.m; sourceTree = "<group>"; };
 		B343A3451539D04100BBFC98 /* PhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoViewController.h; sourceTree = "<group>"; };
 		B343A3461539D04100BBFC98 /* PhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoViewController.m; sourceTree = "<group>"; };
+		B39D3CAC154FA0BE0018ED6F /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
+		B39D3CAD154FA0BE0018ED6F /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
+		B39D3CB0154FAA7B0018ED6F /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		B39D3CB2154FAA820018ED6F /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		B39D3CBB154FDC440018ED6F /* PhotoAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoAnnotation.h; sourceTree = "<group>"; };
+		B39D3CBC154FDC440018ED6F /* PhotoAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoAnnotation.m; sourceTree = "<group>"; };
+		B39D3CBE154FDEFD0018ED6F /* PlaceAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceAnnotation.h; sourceTree = "<group>"; };
+		B39D3CBF154FDEFD0018ED6F /* PlaceAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaceAnnotation.m; sourceTree = "<group>"; };
 		B3C2EA6F1549A1DB002F234A /* GeneralTableViewController+SubClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GeneralTableViewController+SubClass.h"; sourceTree = "<group>"; };
 		B3F1B71D154DA424000FC635 /* PhotoAtPlaceTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoAtPlaceTableViewController.h; sourceTree = "<group>"; };
 		B3F1B71E154DA424000FC635 /* PhotoAtPlaceTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoAtPlaceTableViewController.m; sourceTree = "<group>"; };
@@ -71,6 +84,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B39D3CB3154FAA820018ED6F /* MapKit.framework in Frameworks */,
+				B39D3CB1154FAA7B0018ED6F /* CoreLocation.framework in Frameworks */,
 				B30D0A35153970AB00431D7A /* UIKit.framework in Frameworks */,
 				B30D0A37153970AB00431D7A /* Foundation.framework in Frameworks */,
 				B30D0A39153970AB00431D7A /* CoreGraphics.framework in Frameworks */,
@@ -101,6 +116,8 @@
 		B30D0A33153970AB00431D7A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B39D3CB2154FAA820018ED6F /* MapKit.framework */,
+				B39D3CB0154FAA7B0018ED6F /* CoreLocation.framework */,
 				B30D0A34153970AB00431D7A /* UIKit.framework */,
 				B30D0A36153970AB00431D7A /* Foundation.framework */,
 				B30D0A38153970AB00431D7A /* CoreGraphics.framework */,
@@ -111,9 +128,9 @@
 		B30D0A3A153970AB00431D7A /* FlickrBrowser */ = {
 			isa = PBXGroup;
 			children = (
-				B3F1B72D154EEE13000FC635 /* View Controller */,
-				B3F1B72A154EEE07000FC635 /* PhotoCache.h */,
-				B3F1B72B154EEE07000FC635 /* PhotoCache.m */,
+				B39D3CC2154FDF310018ED6F /* Photo */,
+				B39D3CC1154FDF0A0018ED6F /* Map */,
+				B3F1B72D154EEE13000FC635 /* Table */,
 				B38626E4154444F90075E4EA /* Storyboards */,
 				B38626E5154445040075E4EA /* img */,
 				B30D0A3B153970AB00431D7A /* Supporting Files */,
@@ -164,11 +181,33 @@
 			name = img;
 			sourceTree = "<group>";
 		};
-		B3F1B72D154EEE13000FC635 /* View Controller */ = {
+		B39D3CC1154FDF0A0018ED6F /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				B39D3CAC154FA0BE0018ED6F /* MapViewController.h */,
+				B39D3CAD154FA0BE0018ED6F /* MapViewController.m */,
+				B39D3CBB154FDC440018ED6F /* PhotoAnnotation.h */,
+				B39D3CBC154FDC440018ED6F /* PhotoAnnotation.m */,
+				B39D3CBE154FDEFD0018ED6F /* PlaceAnnotation.h */,
+				B39D3CBF154FDEFD0018ED6F /* PlaceAnnotation.m */,
+			);
+			name = Map;
+			sourceTree = "<group>";
+		};
+		B39D3CC2154FDF310018ED6F /* Photo */ = {
 			isa = PBXGroup;
 			children = (
 				B343A3451539D04100BBFC98 /* PhotoViewController.h */,
 				B343A3461539D04100BBFC98 /* PhotoViewController.m */,
+				B3F1B72A154EEE07000FC635 /* PhotoCache.h */,
+				B3F1B72B154EEE07000FC635 /* PhotoCache.m */,
+			);
+			name = Photo;
+			sourceTree = "<group>";
+		};
+		B3F1B72D154EEE13000FC635 /* Table */ = {
+			isa = PBXGroup;
+			children = (
 				B3C2EA6F1549A1DB002F234A /* GeneralTableViewController+SubClass.h */,
 				B343A3331539BEC900BBFC98 /* GeneralTableViewController.h */,
 				B343A3341539BEC900BBFC98 /* GeneralTableViewController.m */,
@@ -181,7 +220,7 @@
 				B30D0AA11539A4DB00431D7A /* PlaceTableViewController.h */,
 				B30D0AA21539A4DB00431D7A /* PlaceTableViewController.m */,
 			);
-			name = "View Controller";
+			name = Table;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -262,6 +301,9 @@
 				B343A3471539D04100BBFC98 /* PhotoViewController.m in Sources */,
 				B3F1B71F154DA424000FC635 /* PhotoAtPlaceTableViewController.m in Sources */,
 				B3F1B72C154EEE07000FC635 /* PhotoCache.m in Sources */,
+				B39D3CAE154FA0BE0018ED6F /* MapViewController.m in Sources */,
+				B39D3CBD154FDC440018ED6F /* PhotoAnnotation.m in Sources */,
+				B39D3CC0154FDEFE0018ED6F /* PlaceAnnotation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

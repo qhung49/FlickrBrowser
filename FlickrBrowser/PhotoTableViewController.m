@@ -10,6 +10,7 @@
 #import "GeneralTableViewController+SubClass.h"
 #import "FlickrFetcher.h"
 #import "PhotoViewController.h"
+#import "MapViewController.h"
 
 @interface PhotoTableViewController ()
 
@@ -27,6 +28,11 @@
         NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
         PhotoViewController *photoVC = ([segue.destinationViewController isKindOfClass:[PhotoViewController class]]) ? segue.destinationViewController : nil;
         [self updatePhotoViewController:photoVC withSelectedIndexPath:indexPath andTitle:[[sender textLabel] text]];
+    }
+    else if ([segue.identifier isEqualToString:@"Show Map"]) {
+        [segue.destinationViewController setAnnotationsArePhoto:YES];
+        [segue.destinationViewController setTitle:@"Map"];
+        [segue.destinationViewController setModel:self.model];
     }
 }
 

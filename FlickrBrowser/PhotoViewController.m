@@ -112,11 +112,11 @@
         self.photoCache.url = self.photoURL;
         UIImage *image = self.photoCache.image;
         dispatch_async(dispatch_get_main_queue(), ^{
+            if (![self.navigationController.visibleViewController isEqual:self]) return; // visible view controller has changed
             if (![currentURL isEqual:self.photoURL]) return; // model has changed
             [self.spinner stopAnimating];
             self.imageView.image = image;
             self.imageView.frame = CGRectMake(0, 0, self.imageView.image.size.width, self.imageView.image.size.height);
-            NSLog(@"imageView frame = %@",NSStringFromCGRect(self.imageView.frame));
             self.scrollView.zoomScale = 1;
             self.scrollView.contentSize = self.imageView.image.size;
             //self.scrollView.bounces = NO;
@@ -128,7 +128,6 @@
 
 - (void)zoomToOptimalRect
 {
-    NSLog(@"imageView frame = %@",NSStringFromCGRect(self.imageView.frame));
     CGRect bounds = self.scrollView.bounds;
     CGRect rect = CGRectMake(self.imageView.frame.origin.x, self.imageView.frame.origin.y, self.imageView.frame.size.width, self.imageView.frame.size.height);
     CGFloat ratio = bounds.size.height/bounds.size.width;

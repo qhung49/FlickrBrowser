@@ -39,17 +39,13 @@
         NSArray *recents = [[NSUserDefaults standardUserDefaults] valueForKey:RECENTS_KEY];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.spinner stopAnimating];
-            if ([sender isKindOfClass:[UIBarButtonItem class]])
-            {
-                self.navigationItem.rightBarButtonItem = sender;
-            }
-            else {
-                self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Refresh" style:UIBarButtonSystemItemRefresh target:self action:@selector(refresh:)];
-            }
             self.model = recents;
         });
     });
     dispatch_release(downloadQueue);
+}
+
+- (IBAction)showMap:(UIBarButtonItem *)sender {
 }
 
 @end

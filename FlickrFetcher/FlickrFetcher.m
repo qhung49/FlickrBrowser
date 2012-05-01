@@ -79,4 +79,14 @@
     return [NSURL URLWithString:[self urlStringForPhoto:photo format:format]];
 }
 
++(NSDictionary *)cityAndStateFromPlaceName:(NSString *)placeName
+{
+    NSMutableArray *chunks = [[placeName componentsSeparatedByString:@", "] mutableCopy];
+    NSString *city = [chunks objectAtIndex:0];
+    [chunks removeObjectAtIndex:0];
+    NSString *state = [chunks componentsJoinedByString:@", "];
+    NSDictionary *result = [NSDictionary dictionaryWithObjectsAndKeys:city,@"city",state,@"state",nil];
+    return result;
+}
+
 @end

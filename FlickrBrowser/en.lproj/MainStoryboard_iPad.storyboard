@@ -64,7 +64,9 @@
                             <outlet property="delegate" destination="KDt-cj-LSH" id="dhG-y6-iSA"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Top Places" id="1F6-hZ-jET"/>
+                    <navigationItem key="navigationItem" title="Top Places" id="1F6-hZ-jET">
+                        <barButtonItem key="rightBarButtonItem" title="Map" id="8qX-aM-798"/>
+                    </navigationItem>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="blackTranslucent"/>
                 </tableViewController>
             </objects>
@@ -111,7 +113,9 @@
                             <outlet property="delegate" destination="YNx-tU-qUv" id="zdP-rb-kzv"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="ZrZ-le-5Ei"/>
+                    <navigationItem key="navigationItem" id="ZrZ-le-5Ei">
+                        <barButtonItem key="rightBarButtonItem" title="Map" id="lYw-8V-u8k"/>
+                    </navigationItem>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="blackTranslucent"/>
                 </tableViewController>
             </objects>
@@ -218,7 +222,9 @@
                             <outlet property="delegate" destination="f2h-YD-bie" id="iFe-az-jNB"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Recent Places" id="dfA-sh-zJd"/>
+                    <navigationItem key="navigationItem" title="Recent Places" id="dfA-sh-zJd">
+                        <barButtonItem key="rightBarButtonItem" title="Map" id="cph-yl-KIm"/>
+                    </navigationItem>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="blackTranslucent"/>
                 </tableViewController>
             </objects>
@@ -248,10 +254,10 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <items/>
                             </toolbar>
-                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" style="gray" id="lDT-cE-3fV">
-                                <rect key="frame" x="374" y="492" width="20" height="20"/>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" style="whiteLarge" id="lDT-cE-3fV">
+                                <rect key="frame" x="366" y="483" width="37" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                <color key="color" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="color" red="0.60000002384185791" green="0.40000000596046448" blue="0.20000000298023224" alpha="1" colorSpace="calibratedRGB"/>
                             </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -266,6 +272,28 @@
                 </viewController>
             </objects>
             <point key="canvasLocation" x="846" y="1611"/>
+        </scene>
+        <!--Map View Controller-->
+        <scene sceneID="efl-BA-PTJ">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gJs-cZ-aTt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController storyboardIdentifier="MapVC" id="n8z-12-R1i" customClass="MapViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="3Qo-Q4-gjm">
+                        <rect key="frame" x="0.0" y="20" width="768" height="1004"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" id="04t-IV-dEZ">
+                                <rect key="frame" x="0.0" y="0.0" width="768" height="1004"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </mapView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="tD1-Kb-fev"/>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="blackTranslucent"/>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="2277" y="504"/>
         </scene>
     </scenes>
     <resources>
