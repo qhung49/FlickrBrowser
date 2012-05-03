@@ -88,6 +88,8 @@
     dispatch_async(downloadQueue, ^{
         NSArray *places = [FlickrFetcher topPlaces];
         dispatch_async(dispatch_get_main_queue(), ^{
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+            if (self.view.hidden) return;
             [self.spinner stopAnimating];
             self.model = places;
         });
@@ -97,9 +99,9 @@
 
 #pragma mark UITableViewController
 
-- (void)viewDidLoad
+- (void)viewWillAppear:(BOOL)animated
 {
-    [super viewDidLoad];
+    [super viewWillAppear:animated];
     [self refresh:nil];
 }
 

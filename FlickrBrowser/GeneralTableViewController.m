@@ -48,6 +48,7 @@
     
     self.spinner.hidesWhenStopped = YES;
     [self.spinner startAnimating];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 }
 
 #pragma mark UITableViewController

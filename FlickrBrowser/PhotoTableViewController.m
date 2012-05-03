@@ -56,6 +56,23 @@
     return [[self.tableContent objectAtIndex:section] count];
 }
 
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSDictionary *photo = [[self.tableContent objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    dispatch_queue_t downloadQueue = dispatch_queue_create("downloader", NULL);
+    dispatch_async(downloadQueue, ^{
+        NSURL *url = [FlickrFetcher urlForPhoto:photo format:FlickrPhotoFormatSquare];
+        UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+            if (cell.hidden) return;
+            cell.imageView.image = image;
+        });
+    });
+    dispatch_release(downloadQueue);
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Photo Cell";

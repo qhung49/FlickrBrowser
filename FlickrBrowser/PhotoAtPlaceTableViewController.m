@@ -43,14 +43,13 @@
     dispatch_async(downloadQueue, ^{
         NSArray *photos = [FlickrFetcher photosInPlace:self.place maxResults:50];
         dispatch_async(dispatch_get_main_queue(), ^{
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+            if (self.view.hidden) return;
             [self.spinner stopAnimating];
             self.model = photos;
         });
     });
     dispatch_release(downloadQueue);
-}
-
-- (IBAction)showMap:(UIBarButtonItem *)sender {
 }
 
 @end

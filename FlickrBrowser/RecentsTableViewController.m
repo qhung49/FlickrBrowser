@@ -38,14 +38,12 @@
     dispatch_async(downloadQueue, ^{
         NSArray *recents = [[NSUserDefaults standardUserDefaults] valueForKey:RECENTS_KEY];
         dispatch_async(dispatch_get_main_queue(), ^{
+            if (self.view.hidden) return;
             [self.spinner stopAnimating];
             self.model = recents;
         });
     });
     dispatch_release(downloadQueue);
-}
-
-- (IBAction)showMap:(UIBarButtonItem *)sender {
 }
 
 @end

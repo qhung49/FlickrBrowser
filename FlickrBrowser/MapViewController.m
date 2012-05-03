@@ -68,32 +68,18 @@
 {
     if([mapView.annotations count] == 0)
         return;
-    
-    CLLocationCoordinate2D topLeftCoord;
-    topLeftCoord.latitude = -90;
-    topLeftCoord.longitude = 180;
-    
-    CLLocationCoordinate2D bottomRightCoord;
-    bottomRightCoord.latitude = 90;
-    bottomRightCoord.longitude = -180;
-    
-    for(id<MKAnnotation> annotation in mapView.annotations)
-    {
-        topLeftCoord.longitude = fmin(topLeftCoord.longitude, annotation.coordinate.longitude);
-        topLeftCoord.latitude = fmax(topLeftCoord.latitude, annotation.coordinate.latitude);
-        
-        bottomRightCoord.longitude = fmax(bottomRightCoord.longitude, annotation.coordinate.longitude);
-        bottomRightCoord.latitude = fmin(bottomRightCoord.latitude, annotation.coordinate.latitude);
+     MKMapRect zoomRect = MKMapRectNull;
+    for (id <MKAnnotation> annotation in mapView.annotations) {
+        MKMapPoint annotationPoint = MKMapPointForCoordinate(annotation.coordinate);
+        MKMapRect pointRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 0.1, 0.1);
+        if (MKMapRectIsNull(zoomRect)) {
+            zoomRect = pointRect;
+        } else {
+            zoomRect = MKMapRectUnion(zoomRect, pointRect);
+        }
     }
-    
-    MKCoordinateRegion region;
-    region.center.latitude = topLeftCoord.latitude - (topLeftCoord.latitude - bottomRightCoord.latitude) * 0.5;
-    region.center.longitude = topLeftCoord.longitude + (bottomRightCoord.longitude - topLeftCoord.longitude) * 0.5;
-    region.span.latitudeDelta = fabs(topLeftCoord.latitude - bottomRightCoord.latitude) * 1.2; // Add a little extra space on the sides
-    region.span.longitudeDelta = fabs(bottomRightCoord.longitude - topLeftCoord.longitude) * 1.2; // Add a little extra space on the sides
-    
-    region = [mapView regionThatFits:region];
-    [mapView setRegion:region animated:YES];
+    zoomRect = [mapView mapRectThatFits:zoomRect];
+    [mapView setVisibleMapRect:zoomRect edgePadding:UIEdgeInsetsFromString(@"{3,3,3,3}") animated:YES];
 }
 
 - (void)viewDidLoad
@@ -141,7 +127,23 @@
         if (self.annotationsArePhoto)
         {
             // maps of photo, show the photo
-            [self performSegueWithIdentifier:@"Display Photo" sender:view.annotation];
+            PhotoViewController *photoVC = [self.splitViewController.viewControllers lastObject];
+            // in case of iPad, set master view controller
+            if (photoVC)
+            {
+                PhotoAnnotation *photoAnnotation = view.annotation;
+                NSDictionary *photo = photoAnnotation.photo;
+                NSURL *url = [FlickrFetcher urlForPhoto:photo format:FlickrPhotoFormatOriginal];
+                
+                // original format not available, fall back to large
+                if (!url) url = [FlickrFetcher urlForPhoto:photo format:FlickrPhotoFormatLarge];
+                [photoVC setTitle:photoAnnotation.title];
+                [photoVC setPhotoURL:url];
+                [mapView deselectAnnotation:view.annotation animated:YES];
+            }
+            else {
+                [self performSegueWithIdentifier:@"Display Photo" sender:view.annotation];    
+            }
         }
         else {
             [self performSegueWithIdentifier:@"Show Photo List" sender:view.annotation];
@@ -171,11 +173,9 @@
 
 -(void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
 {
-    // load image
-    //UIImage *image = [self.delegate mapViewController:self imageForAnnotation:view.annotation];
-    //[(UIImageView *)view.leftCalloutAccessoryView setImage:image];
     if (self.annotationsArePhoto)
     {
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
         dispatch_queue_t downloadQueue = dispatch_queue_create("map thumbnail downloader", NULL);
         dispatch_async(downloadQueue, ^{
             PhotoAnnotation *photoAnnotation = view.annotation;
@@ -183,6 +183,7 @@
             NSData *data =[NSData dataWithContentsOfURL:url];
             UIImage *image = [UIImage imageWithData:data]; 
             dispatch_async(dispatch_get_main_queue(), ^{
+                [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
                 if (view.hidden) return;
                 [(UIImageView *)view.leftCalloutAccessoryView setImage:image];
             });
