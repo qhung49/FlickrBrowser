@@ -82,12 +82,17 @@
     [mapView setVisibleMapRect:zoomRect edgePadding:UIEdgeInsetsFromString(@"{3,3,3,3}") animated:YES];
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self refreshView];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.mapView.delegate = self;
-    [self refreshView];
 }
 
 - (void)viewDidUnload
@@ -139,7 +144,6 @@
                 if (!url) url = [FlickrFetcher urlForPhoto:photo format:FlickrPhotoFormatLarge];
                 [photoVC setTitle:photoAnnotation.title];
                 [photoVC setPhotoURL:url];
-                [mapView deselectAnnotation:view.annotation animated:YES];
             }
             else {
                 [self performSegueWithIdentifier:@"Display Photo" sender:view.annotation];    

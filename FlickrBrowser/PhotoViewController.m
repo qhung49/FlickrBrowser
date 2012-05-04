@@ -14,6 +14,7 @@
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *toolbarTitle;
 @property (nonatomic, strong) UIBarButtonItem *splitViewBarButtonItem;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *spinner;
 @property (nonatomic) BOOL viewAppeared;
@@ -29,6 +30,7 @@
 @synthesize imageView = _imageView;
 @synthesize toolbar = _toolbar;
 @synthesize photoURL = _photoURL;
+@synthesize toolbarTitle = _toolbarTitle;
 @synthesize splitViewBarButtonItem = _splitViewBarButtonItem;
 @synthesize spinner = _spinner;
 @synthesize viewAppeared = _viewAppeared;
@@ -65,8 +67,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.viewAppeared = YES;
     if (self.photoURL) [self refreshView];
+    self.viewAppeared = YES;
 }
 
 - (void)viewDidLoad
@@ -84,6 +86,8 @@
     [self setImageView:nil];
     [self setToolbar:nil];
     [self setSpinner:nil];
+    [self setToolbar:nil];
+    [self setToolbarTitle:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -105,6 +109,7 @@
 - (void) refreshView
 {
     [self.spinner startAnimating];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
     dispatch_queue_t downloadQueue = dispatch_queue_create("downloader", NULL);
     dispatch_async(downloadQueue, ^{
@@ -112,9 +117,12 @@
         self.photoCache.url = self.photoURL;
         UIImage *image = self.photoCache.image;
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (![self.navigationController.visibleViewController isEqual:self]) return; // visible view controller has changed
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+            if (self.view.hidden) return;
             if (![currentURL isEqual:self.photoURL]) return; // model has changed
             [self.spinner stopAnimating];
+
+            self.toolbarTitle.title = self.title;
             self.imageView.image = image;
             self.imageView.frame = CGRectMake(0, 0, self.imageView.image.size.width, self.imageView.image.size.height);
             self.scrollView.zoomScale = 1;
@@ -130,6 +138,10 @@
 {
     CGRect bounds = self.scrollView.bounds;
     CGRect rect = CGRectMake(self.imageView.frame.origin.x, self.imageView.frame.origin.y, self.imageView.frame.size.width, self.imageView.frame.size.height);
+    
+    self.scrollView.minimumZoomScale = MIN(MIN(bounds.size.height/rect.size.height, bounds.size.width/rect.size.width),1);
+    NSLog(@"Scale min = %f, max = %f",self.scrollView.minimumZoomScale,self.scrollView.maximumZoomScale);
+    
     CGFloat ratio = bounds.size.height/bounds.size.width;
     if (rect.size.height/rect.size.width > ratio)
     {
@@ -139,9 +151,6 @@
     {
         rect.size.width = rect.size.height / ratio;
     }
-    self.scrollView.maximumZoomScale = MAX(rect.size.height/bounds.size.height, rect.size.width/bounds.size.width);
-    self.scrollView.minimumZoomScale = MIN(bounds.size.height/rect.size.height, bounds.size.width/rect.size.width);
-    NSLog(@"Scale min = %f, max = %f",self.scrollView.minimumZoomScale,self.scrollView.maximumZoomScale);
     [self.scrollView zoomToRect:rect animated:YES];
 }
 
