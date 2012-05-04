@@ -308,6 +308,18 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="739"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </mapView>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" segmentControlStyle="plain" selectedSegmentIndex="0" id="Gg7-oT-3Q9">
+                                <rect key="frame" x="42" y="676" width="237" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <segments>
+                                    <segment title="Normal"/>
+                                    <segment title="Satellite"/>
+                                    <segment title="Hybrid"/>
+                                </segments>
+                                <connections>
+                                    <action selector="changeMapType:" destination="n8z-12-R1i" eventType="valueChanged" id="SKW-RS-iue"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -325,9 +337,46 @@
     <resources>
         <image name="square" width="16" height="16"/>
     </resources>
+    <classes>
+        <class className="GeneralTableViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GeneralTableViewController.h"/>
+        </class>
+        <class className="MapViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MapViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="mapView" candidateClass="MKMapView"/>
+            </relationships>
+        </class>
+        <class className="PhotoAtPlaceTableViewController" superclassName="PhotoTableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/PhotoAtPlaceTableViewController.h"/>
+        </class>
+        <class className="PhotoTableViewController" superclassName="GeneralTableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/PhotoTableViewController.h"/>
+        </class>
+        <class className="PhotoViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/PhotoViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
+                <relationship kind="outlet" name="spinner" candidateClass="UIActivityIndicatorView"/>
+                <relationship kind="outlet" name="toolbar" candidateClass="UIToolbar"/>
+                <relationship kind="outlet" name="toolbarTitle" candidateClass="UIBarButtonItem"/>
+            </relationships>
+        </class>
+        <class className="PlaceTableViewController" superclassName="GeneralTableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/PlaceTableViewController.h"/>
+        </class>
+        <class className="RecentsTableViewController" superclassName="PhotoTableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/RecentsTableViewController.h"/>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar" statusBarStyle="blackTranslucent"/>
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="XZ8-Sr-wVt"/>
+        <segue reference="nQz-QH-teW"/>
+    </inferredMetricsTieBreakers>
 </document>
