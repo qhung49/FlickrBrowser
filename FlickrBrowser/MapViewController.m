@@ -138,12 +138,8 @@
             {
                 PhotoAnnotation *photoAnnotation = view.annotation;
                 NSDictionary *photo = photoAnnotation.photo;
-                NSURL *url = [FlickrFetcher urlForPhoto:photo format:FlickrPhotoFormatOriginal];
-                
-                // original format not available, fall back to large
-                if (!url) url = [FlickrFetcher urlForPhoto:photo format:FlickrPhotoFormatLarge];
                 [photoVC setTitle:photoAnnotation.title];
-                [photoVC setPhotoURL:url];
+                [photoVC setPhoto:photo];
             }
             else {
                 [self performSegueWithIdentifier:@"Display Photo" sender:view.annotation];    
@@ -161,12 +157,8 @@
         PhotoViewController *photoVC = segue.destinationViewController;
         PhotoAnnotation *photoAnnotation = sender;
         
-        NSURL *url = [FlickrFetcher urlForPhoto:photoAnnotation.photo format:FlickrPhotoFormatOriginal];
-        // original format not available, fall back to large
-        if (!url) url = [FlickrFetcher urlForPhoto:photoAnnotation.photo format:FlickrPhotoFormatLarge];
-        
         [photoVC setTitle:photoAnnotation.title];
-        [photoVC setPhotoURL:url];
+        [photoVC setPhoto:photoAnnotation.photo];
     }
     else if ([segue.identifier isEqualToString:@"Show Photo List"]) {
         PlaceAnnotation *placeAnnotation = sender;

@@ -1,5 +1,5 @@
 //
-//  FlickrBrowserSecondViewController.m
+//  RecentsTableViewController.m
 //  FlickrBrowser
 //
 //  Created by Hung Mai on 14/4/12.
@@ -7,7 +7,6 @@
 //
 
 #import "RecentsTableViewController.h"
-#import "GeneralTableViewController+SubClass.h"
 
 @interface RecentsTableViewController ()
 
@@ -19,7 +18,7 @@
 
 - (NSArray *)sortedTableContentFromModel:(NSArray *)model
 {
-    // sort according to current criteria: alphabetical, only 1 section
+    // sort according to current criteria: most recently viewed first, only 1 section
     NSArray *section = [[model reverseObjectEnumerator] allObjects];
     return [NSArray arrayWithObject:section];
 }

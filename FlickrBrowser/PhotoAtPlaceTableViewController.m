@@ -8,7 +8,6 @@
 
 #import "PhotoAtPlaceTableViewController.h"
 #import "FlickrFetcher.h"
-#import "GeneralTableViewController+SubClass.h"
 
 @implementation PhotoAtPlaceTableViewController
 

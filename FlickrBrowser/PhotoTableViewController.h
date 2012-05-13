@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "GeneralTableViewController.h"
+#import "GeneralTableViewController+SubClass.h"
 
 #define RECENTS_KEY @"FlickrBrowser.Recents"
 

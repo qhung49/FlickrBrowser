@@ -8,7 +8,6 @@
 
 #import "PlaceTableViewController.h"
 #import "FlickrFetcher.h"
-#import "GeneralTableViewController+SubClass.h"
 #import "PhotoAtPlaceTableViewController.h"
 #import "MapViewController.h"
 
@@ -36,14 +35,6 @@
 
 - (NSArray *)sortedTableContentFromModel:(NSArray *)model
 {
-    /*
-     // sort according to current criteria: alphabetical, only 1 section
-     NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"_content" 
-     ascending:YES
-     selector:@selector(localizedCaseInsensitiveCompare:)];
-     NSArray *section = [self.model sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor, nil]];
-     return [NSArray arrayWithObject:section];
-     */
     // sort according to current criteria: section is by contry, cell is by name
     NSArray *sortedModel = [model sortedArrayUsingComparator:^(id obj1, id obj2) {
         NSString *s1 = [obj1 valueForKeyPath:FLICKR_PLACE_NAME];

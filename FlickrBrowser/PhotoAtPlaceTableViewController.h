@@ -7,6 +7,7 @@
 //
 
 #import "PhotoTableViewController.h"
+#import "GeneralTableViewController+SubClass.h"
 
 @interface PhotoAtPlaceTableViewController : PhotoTableViewController
 

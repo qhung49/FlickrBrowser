@@ -7,7 +7,6 @@
 //
 
 #import "PhotoTableViewController.h"
-#import "GeneralTableViewController+SubClass.h"
 #import "FlickrFetcher.h"
 #import "PhotoViewController.h"
 #import "MapViewController.h"
@@ -41,12 +40,8 @@
 - (void)updatePhotoViewController:(PhotoViewController *)photoVC withSelectedIndexPath:(NSIndexPath *)indexPath andTitle:(NSString *)title
 {
     NSDictionary *photo = [[self.tableContent objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-    NSURL *url = [FlickrFetcher urlForPhoto:photo format:FlickrPhotoFormatOriginal];
-    
-    // original format not available, fall back to large
-    if (!url) url = [FlickrFetcher urlForPhoto:photo format:FlickrPhotoFormatLarge];
     [photoVC setTitle:title];
-    [photoVC setPhotoURL:url];
+    [photoVC setPhoto:photo];
 }
 
 #pragma mark - UITableViewDataSource
