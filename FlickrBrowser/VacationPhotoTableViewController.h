@@ -8,9 +8,11 @@
 
 #import "CoreDataTableViewController.h"
 #import "Place.h"
+#import "Tag.h"
 
 @interface VacationPhotoTableViewController : CoreDataTableViewController
 
 @property (nonatomic,strong) Place *place;
+@property (nonatomic,strong) Tag *photoTag;
 
 @end

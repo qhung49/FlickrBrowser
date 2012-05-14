@@ -38,12 +38,19 @@
 @synthesize spinner = _spinner;
 @synthesize viewAppeared = _viewAppeared;
 @synthesize photoCache = _photoCache;
+@synthesize photoInDatabase = _photoInDatabase;
 
 #pragma mark Setters/Getters
 
 - (void)setPhoto:(NSDictionary *)photo
 {
     _photo = photo;
+    if (self.viewAppeared) [self refreshView];
+}
+
+-(void)setphotoInDatabase:(Photo *)photoInDatabase
+{
+    _photoInDatabase = photoInDatabase;
     if (self.viewAppeared) [self refreshView];
 }
 
@@ -70,7 +77,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    if (self.photo) [self refreshView];
+    if (self.photo || self.photoInDatabase) [self refreshView];
     self.viewAppeared = YES;
 }
 
@@ -107,8 +114,19 @@
         // add photo to database
         [database.managedObjectContext performBlock:^{
             [Photo photoWithFlickrInfo:self.photo ofVacationName:myVacation inManagedObjectContext:database.managedObjectContext];
+        [database saveToURL:database.fileURL forSaveOperation:UIDocumentSaveForOverwriting completionHandler:NULL];
         }];
     }];
+}
+
+- (IBAction)unvisitPressed:(UIBarButtonItem *)sender 
+{
+    if (self.photoInDatabase)
+    {
+        [self.photoInDatabase.managedObjectContext deleteObject:self.photoInDatabase];
+        [self.photoInDatabase.managedObjectContext save:nil]; 
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 #pragma mark UIScrollViewDelegate
@@ -127,13 +145,19 @@
     
     dispatch_queue_t downloadQueue = dispatch_queue_create("downloader", NULL);
     dispatch_async(downloadQueue, ^{
-        NSURL *currentURL = [FlickrFetcher urlForPhotoDisplay:self.photo];
-        self.photoCache.url = [FlickrFetcher urlForPhotoDisplay:self.photo];
+        NSURL *currentURL;
+        if (self.photoInDatabase) {
+            currentURL = [NSURL URLWithString:self.photoInDatabase.photoURL];
+            self.photoCache.url = [NSURL URLWithString:self.photoInDatabase.photoURL];
+        } else {
+            currentURL = [FlickrFetcher urlForPhotoDisplay:self.photo];
+            self.photoCache.url = [FlickrFetcher urlForPhotoDisplay:self.photo];
+        }
         UIImage *image = self.photoCache.image;
         dispatch_async(dispatch_get_main_queue(), ^{
             [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
             if (self.view.hidden) return;
-            if (![currentURL isEqual:[FlickrFetcher urlForPhotoDisplay:self.photo]]) return; // model has changed
+            //if (![currentURL isEqual:[FlickrFetcher urlForPhotoDisplay:self.photo]]) return; // model has changed
             [self.spinner stopAnimating];
 
             self.toolbarTitle.title = self.title;

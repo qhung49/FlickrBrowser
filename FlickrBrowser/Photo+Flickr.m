@@ -41,7 +41,7 @@
         photo.unique = [flickrInfo objectForKey:FLICKR_PHOTO_ID];
         photo.title = [flickrInfo objectForKey:FLICKR_PHOTO_TITLE];
         photo.subtitle = [flickrInfo valueForKeyPath:FLICKR_PHOTO_DESCRIPTION];
-        photo.photoURL = [[FlickrFetcher urlForPhoto:flickrInfo format:FlickrPhotoFormatOriginal] absoluteString];
+        photo.photoURL = [[FlickrFetcher urlForPhotoDisplay:flickrInfo] absoluteString];
         photo.place = [Place placeWithName:[flickrInfo objectForKey:FLICKR_PHOTO_PLACE_NAME] ofVacation:vacationName inManagedObjectContext:context];
         NSString *tags = [flickrInfo objectForKey:FLICKR_TAGS];
         NSLog(@"tags = %@",tags);

@@ -2,7 +2,7 @@
 //  Vacation.h
 //  FlickrBrowser
 //
-//  Created by Hung Mai on 8/5/12.
+//  Created by Hung Mai on 14/5/12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
@@ -14,6 +14,14 @@
 @interface Vacation : NSManagedObject
 
 @property (nonatomic, retain) NSString * name;
-@property (nonatomic, retain) Place *places;
+@property (nonatomic, retain) NSSet *places;
+@end
+
+@interface Vacation (CoreDataGeneratedAccessors)
+
+- (void)addPlacesObject:(Place *)value;
+- (void)removePlacesObject:(Place *)value;
+- (void)addPlaces:(NSSet *)values;
+- (void)removePlaces:(NSSet *)values;
 
 @end

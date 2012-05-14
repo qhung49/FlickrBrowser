@@ -422,7 +422,7 @@
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
                                 <connections>
-                                    <segue destination="3sg-6h-Ci8" kind="push" id="p4x-Za-qQ9"/>
+                                    <segue destination="3sg-6h-Ci8" kind="push" identifier="Display Photo" id="p4x-Za-qQ9"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -446,11 +446,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Tag Cell" textLabel="QJZ-8e-5HA" detailTextLabel="UfG-6k-4Ur" style="IBUITableViewCellStyleSubtitle" id="vRX-1L-Qrw">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Tag Cell" textLabel="QJZ-8e-5HA" detailTextLabel="UfG-6k-4Ur" style="IBUITableViewCellStyleSubtitle" id="vRX-1L-Qrw">
                                 <rect key="frame" x="0.0" y="22" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="300" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="QJZ-8e-5HA">
@@ -470,6 +470,9 @@
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
+                                <connections>
+                                    <segue destination="d52-bL-SG7" kind="push" identifier="Show Photo List" id="URg-O0-z4u"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -590,7 +593,11 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Photo Display" id="eag-r6-WdW">
-                        <barButtonItem key="rightBarButtonItem" title="Unvisit" id="yjg-Z1-r7P"/>
+                        <barButtonItem key="rightBarButtonItem" title="Unvisit" id="yjg-Z1-r7P">
+                            <connections>
+                                <action selector="unvisitPressed:" destination="3sg-6h-Ci8" id="Lzw-iP-HSj"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="imageView" destination="F38-tT-wv8" id="bTe-5a-aCh"/>
@@ -662,8 +669,9 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="f3E-lX-BdL"/>
+        <segue reference="URg-O0-z4u"/>
         <segue reference="5v5-aP-NKs"/>
+        <segue reference="f3E-lX-BdL"/>
         <segue reference="K9r-FR-274"/>
     </inferredMetricsTieBreakers>
 </document>

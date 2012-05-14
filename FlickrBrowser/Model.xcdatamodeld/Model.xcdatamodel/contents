@@ -20,7 +20,7 @@
     </entity>
     <entity name="Vacation" representedClassName="Vacation" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="places" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Place" inverseName="vacation" inverseEntity="Place" syncable="YES"/>
+        <relationship name="places" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Place" inverseName="vacation" inverseEntity="Place" syncable="YES"/>
     </entity>
     <elements>
         <element name="Photo" positionX="342" positionY="180" width="128" height="135"/>

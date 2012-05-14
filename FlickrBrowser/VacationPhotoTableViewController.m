@@ -8,14 +8,22 @@
 
 #import "VacationPhotoTableViewController.h"
 #import "Photo.h"
+#import "PhotoViewController.h"
 
 @implementation VacationPhotoTableViewController
 
 @synthesize place = _place;
+@synthesize photoTag = _photoTag;
 
 -(void)setPlace:(Place *)place
 {
     _place = place;
+    [self setupFetchedResultsController];
+}
+
+- (void)setPhotoTag:(Tag *)photoTag
+{
+    _photoTag = photoTag;
     [self setupFetchedResultsController];
 }
 
@@ -25,12 +33,22 @@
     request.sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"title"
                                                                                     ascending:YES
                                                                                      selector:@selector(localizedCaseInsensitiveCompare:)]];
-    request.predicate = [NSPredicate predicateWithFormat:@"place.name = %@", self.place.name];
+    if (self.place) {
+        request.predicate = [NSPredicate predicateWithFormat:@"place.name = %@", self.place.name];
+        self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
+                                                                            managedObjectContext:self.place.managedObjectContext
+                                                                              sectionNameKeyPath:nil
+                                                                                       cacheName:nil];
+    }
+    else {
+        request.predicate = [NSPredicate predicateWithFormat:@"ANY tags.name like %@", self.photoTag.name];
+        self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
+                                                                            managedObjectContext:self.photoTag.managedObjectContext
+                                                                              sectionNameKeyPath:nil
+                                                                                       cacheName:nil];
+    }
     
-    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
-                                                                        managedObjectContext:self.place.managedObjectContext
-                                                                          sectionNameKeyPath:nil
-                                                                                   cacheName:nil];
+    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -48,6 +66,16 @@
     cell.textLabel.text = photo.title;
     
     return cell;
+}
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"Display Photo"]) {
+        NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
+        Photo *photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        [segue.destinationViewController setTitle:photo.title];
+        [segue.destinationViewController setPhotoInDatabase:photo];
+    }
 }
 
 @end

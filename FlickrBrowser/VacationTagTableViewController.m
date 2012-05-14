@@ -38,13 +38,8 @@
 - (void)setupFetchedResultsController // attaches an NSFetchRequest to this UITableViewController
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Tag"];
-    //request.sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)]];
-    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"photos" ascending:NO comparator:^NSComparisonResult(id obj1, id obj2) {
-        NSNumber *i1 = [NSNumber numberWithUnsignedInt:[obj1 count]];
-        NSNumber *i2 = [NSNumber numberWithUnsignedInt:[obj2 count]];
-        return [i1 compare:i2];
-    }];
-    request.sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+    
+    request.sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)]];
     
     self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
                                                                         managedObjectContext:self.database.managedObjectContext
@@ -74,9 +69,9 @@
 {
     if ([segue.identifier isEqualToString:@"Show Photo List"]) {
         NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
-        Place *place = [self.fetchedResultsController objectAtIndexPath:indexPath];
-        [segue.destinationViewController setTitle:place.name];
-        [segue.destinationViewController setPlace:place];
+        Tag *tag = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        [segue.destinationViewController setTitle:tag.name];
+        [segue.destinationViewController setPhotoTag:tag];
     }
 }
 
